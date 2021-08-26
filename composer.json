@@ -1,0 +1,32 @@
+{
+    "name": "eminazeroglu/telegram",
+    "description": "Telegram kanallarini ve botlarinin idaresi",
+    "keywords": ["telegram", "message", "chat", "notification"],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Azeroglu\\Telegram\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "eminazeroglu",
+            "email": "azeroglu.emin05@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "guzzlehttp/guzzle": "7.4.x-dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Azeroglu\\Telegram\\TelegramServiceProvider"
+            ],
+            "aliases": {
+                "Telegram": "Azeroglu\\Telegram\\Facades\\Telegram"
+            }
+        }
+    }
+}
