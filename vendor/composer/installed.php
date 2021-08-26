@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '667a4b34a091f25ba7e2bf0c30953a26eda245df',
+        'reference' => 'ef41cd50c83b5614c1e2d377f6656b68c2107805',
         'name' => 'eminazeroglu/telegram',
         'dev' => true,
     ),
     'versions' => array(
         'eminazeroglu/telegram' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '667a4b34a091f25ba7e2bf0c30953a26eda245df',
+            'reference' => 'ef41cd50c83b5614c1e2d377f6656b68c2107805',
             'dev_requirement' => false,
         ),
         'guzzlehttp/guzzle' => array(
