@@ -6,29 +6,41 @@ use GuzzleHttp\Client;
 
 class Telegram
 {
-    const _API_URL = 'https://api.telegram.org/bot';
+    protected $client;
     protected $chatId;
     protected $token;
     protected $params = [];
 
     public function __construct()
     {
-        $this->token = env('TELEGRAM_BOT_TOKEN');
+        $this->client = new Client();
+        $this->token  = env('TELEGRAM_BOT_TOKEN');
+    }
+
+    /*
+     * Get Url
+     * */
+    protected function getUrl($method): string
+    {
+        return 'https://api.telegram.org/bot' . $this->token . '/' . $method;
     }
 
     /*
      * Get Data
      * */
-    protected function getData()
+    public function getData()
     {
-        $data  = json_decode(file_get_contents('php://input'), true);
-        $query = @$data['callback_query'];
-        if (@$query):
-            $this->chatId = $query['from']['id'];
-        else:
-            $this->chatId = $data['message']['chat']['id'];
+        $data  = json_decode(file_get_contents('php://input'));
+        $query = @$data->callback_query;
+        if ($data):
+            if (@$query):
+                $this->chatId = $query->from->id;
+            else:
+                $this->chatId = $data->message->chat->id;
+            endif;
+            return $data;
         endif;
-        return $data;
+        return null;
     }
 
     /*
@@ -36,9 +48,7 @@ class Telegram
      * */
     public function setWebhook($url)
     {
-        return $this->request('setWebhook', [
-            'url' => $url
-        ]);
+        return $this->request('setWebhook', ['url' => $url]);
     }
 
     /*
@@ -46,12 +56,14 @@ class Telegram
      * */
     protected function request($method, $post = [])
     {
-        $url     = self::_API_URL . $this->token . '/' . $method;
-        $request = new Client();
-        $request = $request->post($url, [
-            'form_params' => $post
-        ]);
-        return $request->getBody();
+        if (!$this->token) return 'Token null';
+        try {
+            if ($this->chatId) $post = array_merge($post, ['chat_id' => $this->chatId]);
+            return $this->client->post($this->getUrl($method), ['form_params' => $post])->getBody();
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /*
@@ -119,7 +131,7 @@ class Telegram
      * */
     public function caption($text)
     {
-        $this->params = array_merge($this->params, ['caption' =>  mb_substr($text, 0, 1000, 'UTF-8')]);
+        $this->params = array_merge($this->params, ['caption' => mb_substr($text, 0, 1000, 'UTF-8')]);
         return $this;
     }
 
