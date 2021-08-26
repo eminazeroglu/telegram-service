@@ -21,7 +21,7 @@ class Telegram
      * */
     protected function getData()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        $data  = json_decode(file_get_contents('php://input'), true);
         $query = @$data['callback_query'];
         if (@$query):
             $this->chatId = $query['from']['id'];
@@ -46,7 +46,7 @@ class Telegram
      * */
     protected function request($method, $post = [])
     {
-        $url = self::_API_URL . $this->token . '/' . $method;
+        $url     = self::_API_URL . $this->token . '/' . $method;
         $request = new Client();
         $request = $request->post($url, [
             'form_params' => $post
@@ -77,7 +77,7 @@ class Telegram
      * */
     public function content($text)
     {
-        $this->params = array_merge($this->params, ['text' => str_limit($text, 4000)]);
+        $this->params = array_merge($this->params, ['text' => mb_substr($text, 0, 4000, 'UTF-8')]);
         return $this;
     }
 
@@ -119,7 +119,7 @@ class Telegram
      * */
     public function caption($text)
     {
-        $this->params = array_merge($this->params, ['caption' => str_limit($text, 1000)]);
+        $this->params = array_merge($this->params, ['caption' =>  mb_substr($text, 0, 1000, 'UTF-8')]);
         return $this;
     }
 
