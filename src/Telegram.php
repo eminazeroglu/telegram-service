@@ -34,9 +34,13 @@ class Telegram
         $query = @$data['callback_query'];
         if ($data):
             if (@$query):
-                $this->chatId = $query['from']['id'];
+                if (isset($query['from']['id'])):
+                    $this->chatId = $query['from']['id'];
+                endif;
             else:
-                $this->chatId = $data['message']['chat']['id'];
+                if (isset($data['message']['chat']['id'])):
+                    $this->chatId = $data['message']['chat']['id'];
+                endif;
             endif;
             return $data;
         endif;
