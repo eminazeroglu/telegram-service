@@ -6,11 +6,13 @@ use Illuminate\Support\ServiceProvider;
 
 class TelegramServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function register()
     {
         $this->app->singleton('telegram', function ($app) {
-            dd($app);
+            return new Telegram();
         });
+
+        $this->app->alias('telegram', Telegram::class);
     }
 
     public function provides(): array
