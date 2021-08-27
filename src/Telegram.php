@@ -30,13 +30,13 @@ class Telegram
      * */
     public function getData()
     {
-        $data  = json_decode(file_get_contents('php://input'));
-        $query = @$data->callback_query;
+        $data  = json_decode(file_get_contents('php://input'), true);
+        $query = @$data['callback_query'];
         if ($data):
             if (@$query):
-                $this->chatId = $query->from->id;
+                $this->chatId = $query['from']['id'];
             else:
-                $this->chatId = $data->message->chat->id;
+                $this->chatId = $data['message']['chat']['id'];
             endif;
             return $data;
         endif;
